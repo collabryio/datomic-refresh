@@ -2,12 +2,17 @@
   (:require
    electric-starter-app.main
    [hyperfiddle.electric :as e]
+   #?(:clj datomic.client.api)
+   #?(:clj electric-starter-app.db-create)
    #?(:clj [electric-starter-app.server-jetty :as jetty])
    #?(:clj [shadow.cljs.devtools.api :as shadow])
    #?(:clj [shadow.cljs.devtools.server :as shadow-server])
    #?(:clj [clojure.tools.logging :as log])))
 
 (comment (-main)) ; repl entrypoint
+
+(def datomic-client)
+(def datomic-conn)
 
 #?(:clj ;; Server Entrypoint
    (do
@@ -30,7 +35,13 @@
                        (e/boot-server {} electric-starter-app.main/Main ring-request))
                      config))
 
-       (comment (.stop server)))))
+       (comment (.stop server))
+       (alter-var-root #'datomic-client (constantly (datomic.client.api/client {:server-type :dev-local
+                                                                                :storage-dir :mem
+                                                                                :system "ci"})))
+       (datomic.client.api/create-database datomic-client {:db-name "test"})
+       (alter-var-root #'datomic-conn (constantly (datomic.client.api/connect datomic-client {:db-name "test"})))
+       (electric-starter-app.db-create/create-schema datomic-conn))))
 
 
 #?(:cljs ;; Client Entrypoint

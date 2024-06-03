@@ -10,6 +10,7 @@
  :aliases {:dev
            {:extra-paths ["src"]
             :extra-deps  {thheller/shadow-cljs          {:mvn/version "2.26.2"}
+                          com.datomic/local {:mvn/version "1.0.277"}
                           io.github.clojure/tools.build {:mvn/version "0.9.6"
                                                          :exclusions  [com.google.guava/guava  ; Guava version conflict between tools.build and clojurescript.
                                                                        org.slf4j/slf4j-nop]}}}}} ; clashes with app logger
