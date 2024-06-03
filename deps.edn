@@ -1,0 +1,18 @@
+{:deps    {com.hyperfiddle/electric       {:git/url "https://github.com/hyperfiddle/electric" :git/sha "b32ac98df7d7ec87f225d47354671be172ffa87e"}
+           ring/ring                      {:mvn/version "1.11.0"} ; comes with Jetty
+           org.clojure/clojure            {:mvn/version "1.11.1"}
+           org.clojure/clojurescript      {:mvn/version "1.11.121"}
+           org.clojure/tools.logging      {:mvn/version "1.2.4"}
+           ch.qos.logback/logback-classic {:mvn/version "1.4.14"}}
+ :mvn/repos {"cognitect-dev-tools"
+             {:url "https://dev-tools.cognitect.com/maven/releases/"}}
+ :paths   ["src" "resources"]
+ :aliases {:dev
+           {:extra-paths ["src"]
+            :extra-deps  {thheller/shadow-cljs          {:mvn/version "2.26.2"}
+                          io.github.clojure/tools.build {:mvn/version "0.9.6"
+                                                         :exclusions  [com.google.guava/guava  ; Guava version conflict between tools.build and clojurescript.
+                                                                       org.slf4j/slf4j-nop]}}}}} ; clashes with app logger
+
+
+
