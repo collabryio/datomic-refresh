@@ -3,6 +3,7 @@
             [hyperfiddle.electric-dom2 :as dom]
             [hyperfiddle.electric-ui4 :as ui4]
             [hyperfiddle.router :as router]
+            electric-starter-app.v2
             #?(:clj [datomic.client.api :as d])))
 
 
@@ -126,7 +127,8 @@
       (dom/h1 (dom/text "Hello from Electric Clojure"))
       (dom/div
         (router/link ['.. [::table]] (dom/text "Table")) (dom/text " ")
-        (router/link ['.. [::update]] (dom/text "Update")) (dom/text " "))
+        (router/link ['.. [::update]] (dom/text "Update")) (dom/text " ")
+        (router/link ['.. [::version2]] (dom/text "Version2")) (dom/text " "))
       (router/router (router/HTML5-History.)
                      (let [[page x :as route] (ffirst router/route)]
                        (if-not page
@@ -137,6 +139,7 @@
                                          ::update (e/server (Update. x))
                                          ::create (e/server (Create.))
                                          ::delete (e/server (Delete. x))
+                                         ::version2 (e/server (electric-starter-app.v2/TableV2.))
 
                                          (e/client (dom/text "no matching route: " (pr-str page)))))))))))
 
