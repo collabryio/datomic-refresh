@@ -11,7 +11,7 @@
 (def !state (atom nil))
 (def !refresh (atom {:refresh false}))
 
-(defn filter-by-db-id [data id]
+(defn exclude-by-db-id [data id]
   (->> data
        (map (fn [inner-vector]
               (filter #(not= (:db/id %) id) inner-vector)))
@@ -23,6 +23,7 @@
         (e/client
           (let [refresh (e/watch !refresh)]
            (let [state (e/watch !state)]
+
              (if (:refresh refresh)
                (do (reset! !state (e/server (d/q '[:find (pull ?e [*])
                                                 :where [?e :test/value1 _]] db)))
@@ -39,7 +40,7 @@
                               (dom/th (dom/props {:scope "col"}) (dom/text "Value2"))))
                           (dom/tbody
                             (e/for [value state]
-                                   (println value)
+
                                    (dom/tr
                                      (dom/td (dom/text (:test/value1 (first value))))
                                      (dom/td (dom/text (:test/value2 (first value))))
@@ -65,8 +66,7 @@
 
 (e/defn TableV2 []
   (e/client
-    (let [state (e/watch !state)
-          refresh (e/watch !refresh)]
+    (let [state (e/watch !state)]
       (e/server
         (binding [conn @(requiring-resolve 'dev/datomic-conn)]
           (binding [db (d/db conn)]
@@ -95,7 +95,7 @@
                                       (dom/td
                                         (dom/button
                                           (dom/on "click" (e/fn [event] (e/server (d/transact conn {:tx-data [[:db/retractEntity (:db/id (first value))]]}))
-                                                                (reset! !state (filter-by-db-id state (:db/id (first value))))))
+                                                                (reset! !state (exclude-by-db-id state (:db/id (first value))))))
 
                                           (dom/props {:class "btn btn-danger text-center ",
                                                       :type  "button"})

@@ -30,6 +30,10 @@
                        (dom/tbody
                          (e/for [value (e/server (d/q '[:find (pull ?e [*])
                                                         :where [?e :test/value1 _]] db))]
+                                (println (->> value
+                                              (map (fn [inner-vector]
+                                                     (filter #(not= (:db/id %) (:db/id (first value))) inner-vector)))
+                                              (filter seq)))
                                 (dom/tr
                                   (dom/td (dom/text (:test/value1 (first value))))
                                   (dom/td (dom/text (:test/value2 (first value))))
