@@ -16,7 +16,7 @@
        (map (fn [inner-vector]
               (filter #(not= (:db/id %) id) inner-vector)))
        (filter seq)))
-(e/defn Table []
+#_(e/defn Table []
   (e/server
     (binding [conn @(requiring-resolve 'dev/datomic-conn)]
       (binding [db (d/db conn)]

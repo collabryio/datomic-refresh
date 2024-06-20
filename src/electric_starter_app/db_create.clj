@@ -17,6 +17,8 @@
                                :db/cardinality :db.cardinality/one}
                               {:db/ident :test/value2
                                :db/valueType :db.type/string
-                               :db/cardinality :db.cardinality/one}]}))
+                               :db/cardinality :db.cardinality/one}]})
+  (d/transact conn {:tx-data [{:test/value1 "test1"
+                               :test/value2 "test2"}]}))
 
 

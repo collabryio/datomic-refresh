@@ -131,20 +131,17 @@
       (dom/h1 (dom/text "Hello from Electric Clojure"))
       (dom/div
         (router/link ['.. [::table]] (dom/text "Table")) (dom/text " ")
-        (router/link ['.. [::update]] (dom/text "Update")) (dom/text " ")
-        (router/link ['.. [::version2]] (dom/text "Version2")) (dom/text " "))
+        (router/link ['.. [::update]] (dom/text "Update")) (dom/text " "))
       (router/router (router/HTML5-History.)
                      (let [[page x :as route] (ffirst router/route)]
                        (if-not page
                          (router/Navigate!. [[::table]])
                          (router/focus [route]
                                        (case page
-                                         ::table (e/server (Table.))
+                                         ::table (e/server (electric-starter-app.v2/TableV2.))
                                          ::update (e/server (Update. x))
                                          ::create (e/server (Create.))
                                          ::delete (e/server (Delete. x))
-                                         ::version2 (e/server (electric-starter-app.v2/TableV2.))
-
                                          (e/client (dom/text "no matching route: " (pr-str page)))))))))))
 
 
